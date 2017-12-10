@@ -1,11 +1,11 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: Jan Jendrusak
 -- 
 -- Create Date: 12/10/2017 07:20:38 PM
 -- Design Name: 
 -- Module Name: program_counter - Behavioral
--- Project Name: 
+-- Project Name: processor
 -- Target Devices: 
 -- Tool Versions: 
 -- Description: 
@@ -13,7 +13,7 @@
 -- Dependencies: 
 -- 
 -- Revision:
--- Revision 0.01 - File Created
+-- Revision 0.1 - First iteration of working module
 -- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------

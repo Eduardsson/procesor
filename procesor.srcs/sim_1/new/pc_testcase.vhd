@@ -1,3 +1,23 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: Jan Jendrusak
+-- 
+-- Create Date: 12/10/2017 07:20:38 PM
+-- Design Name: 
+-- Module Name: program_counter_tb
+-- Project Name: processor
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.1 - testcase covering basic requirements for program_counter module
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.Std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
