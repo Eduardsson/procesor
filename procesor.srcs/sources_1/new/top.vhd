@@ -100,8 +100,9 @@ component reg_field is
 end component;
 
 component rom is
-    Port ( pc : in STD_LOGIC_VECTOR (15 downto 0);
-           inst : out STD_LOGIC_VECTOR (31 downto 0));
+    Port (  clk : in STD_LOGIC; 
+            pc : in STD_LOGIC_VECTOR (15 downto 0);
+            inst : out STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
 
@@ -161,6 +162,7 @@ reg_field_module: reg_field port map (
 );
 
 rom_module: rom port map (
+    clk => clk,
     pc => pc,
     inst => inst
 );

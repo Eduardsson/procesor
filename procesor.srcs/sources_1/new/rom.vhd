@@ -21,24 +21,45 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use std.textio.all;
+use ieee.std_logic_textio.all;
 
 entity rom is
-    Port ( pc : in STD_LOGIC_VECTOR (15 downto 0);
-           inst : out STD_LOGIC_VECTOR (31 downto 0));
+    Port ( 
+        clk : in STD_LOGIC;
+        pc : in STD_LOGIC_VECTOR (15 downto 0);
+        inst : out STD_LOGIC_VECTOR (31 downto 0));
 end rom;
 
-architecture Behavioral of rom is
+architecture behavioral of rom is
 
+    -- Rom data type
+    type rom_type is array (1024 downto 0) of std_logic_vector (31 downto 0);
+    
+    -- load memory from file
+    impure function InitRomFromFile (RomFileName : in string) return rom_type is
+        FILE romfile : text is in RomFileName;
+        variable RomFileLine : line;
+        variable rom : rom_type;
+        begin
+            for i in rom_type'range loop
+                readline(romfile, RomFileLine);
+                hread(RomFileLine, rom(1024 - i));
+            end loop;
+        return rom;
+    end function;
+    
+    constant rom : rom_type := InitRomFromFile("programs/rom.data");
+    
 begin
 
-
-end Behavioral;
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            inst <= rom (conv_integer(pc));
+        end if;
+    end process;
+    
+end behavioral;
