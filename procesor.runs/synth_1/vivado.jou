@@ -1,12 +1,12 @@
 #-----------------------------------------------------------
 # Vivado v2016.4 (64-bit)
-# SW Build 1733598 on Wed Dec 14 22:35:42 MST 2016
-# IP Build 1731160 on Wed Dec 14 23:47:21 MST 2016
-# Start of session at: Sun Dec 10 20:24:13 2017
-# Process ID: 15488
-# Current directory: /media/psf/Home/Documents/VLSI/procesor/procesor.runs/synth_1
-# Command line: vivado -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
-# Log file: /media/psf/Home/Documents/VLSI/procesor/procesor.runs/synth_1/top.vds
-# Journal file: /media/psf/Home/Documents/VLSI/procesor/procesor.runs/synth_1/vivado.jou
+# SW Build 1756540 on Mon Jan 23 19:11:23 MST 2017
+# IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+# Start of session at: Sun Dec 10 22:48:29 2017
+# Process ID: 7452
+# Current directory: D:/VLSI/procesor/procesor.runs/synth_1
+# Command line: vivado.exe -log program_counter.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source program_counter.tcl
+# Log file: D:/VLSI/procesor/procesor.runs/synth_1/program_counter.vds
+# Journal file: D:/VLSI/procesor/procesor.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
-source top.tcl -notrace
+source program_counter.tcl -notrace

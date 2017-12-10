@@ -21,6 +21,8 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+--use IEEE.NUMERIC_STD.ALL;
+use ieee.std_logic_unsigned.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -37,12 +39,29 @@ entity program_counter is
            jump_en : in STD_LOGIC;
            pc_en : in STD_LOGIC;
            jump_addr : in STD_LOGIC_VECTOR (15 downto 0);
-           pc : out STD_LOGIC_VECTOR (15 downto 0));
+           pc : out STD_LOGIC_VECTOR (15 downto 0) );
 end program_counter;
 
 architecture Behavioral of program_counter is
 
+signal pc_int: STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+
 begin
+
+process (clk)
+    begin
+        if (clk'event and clk='1') then
+          if (rst='1') then
+            pc_int <= (others => '0');
+          elsif jump_en='1' then
+            pc_int <= jump_addr;
+          else
+            pc_int <= pc_int + 1;
+          end if;
+        end if;
+    end process;
+
+    pc <= pc_int;
 
 
 end Behavioral;
