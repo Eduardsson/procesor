@@ -1,0 +1,61 @@
+rst vzdy synchronny
+
+bloky:
+
+programový čítač - sekvencna logika
+rst = 1 ==> pc = 0 
+pc_en = 1 ==> pc++; 
+jump_en=1 ==> pc = jump_addr
+
+rom - komb. logika
+inst = rom(pc)
+
+dekoder - sekvencna logika
+
+ADD
+inst=
+6'  0x38
+5'  rD
+5'  rA
+5'  rB
+7'  RFU 
+4'  0x0
+
+1. stav
+addr_1 = rA
+addr_2 = rB
+alu_c = 0x1
+data = 16' 0x00
+mux_c = 3' 0b000
+write_en = 3' 0x0
+jump_en = 0
+pc_en = 0
+
+2. stav
+addr_1 = 0x00
+addr_2 = 0x00
+alu_c = 0x1
+data = 16' 0x00
+mux_c = 3' 0b000
+write_en = 3' 0x1
+jump_en = 0
+pc_en = 1
+
+registrove pole - sekvencna logika
+
+if mux_c = 0b000 ==> reg_2 = sram(addr_2), reg_g = data_alu
+if mux_c = 0b001 ==> reg_2 = sram(addr_2), reg_g = data_inst
+if mux_c = 0b010 ==> reg_2 = data_inst, reg_g = data_alu
+if mux_c = 0b100 ==> reg_2 = data_g, reg_g = data_alu
+
+alu - komb. logika
+
+AND
+if alu_c = 0x1 ==> data_alu = reg_1 + reg_2
+
+GPIO
+
+if write_t=1 ==> nastavi i/o podla t (Z alebo podla write_o)
+if write_o=1 ==> nastavi i/o podla o (1 or 0)
+if t=1 ==> i = i/0
+if t=0 ==> i = o
