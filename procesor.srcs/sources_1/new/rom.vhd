@@ -27,10 +27,10 @@ use std.textio.all;
 use ieee.std_logic_textio.all;
 
 entity rom is
-    Port ( 
-        clk : in STD_LOGIC;
+    Port (
         pc : in STD_LOGIC_VECTOR (15 downto 0);
-        inst : out STD_LOGIC_VECTOR (31 downto 0));
+        inst : out STD_LOGIC_VECTOR (31 downto 0)
+    );
 end rom;
 
 architecture behavioral of rom is
@@ -55,11 +55,6 @@ architecture behavioral of rom is
     
 begin
 
-    process(clk)
-    begin
-        if rising_edge(clk) then
-            inst <= rom (conv_integer(pc));
-        end if;
-    end process;
+    inst <= rom (conv_integer(pc));
     
 end behavioral;
