@@ -1,0 +1,38 @@
+instrukcie a co sa s nimi bude robit v ALU
+
+1. (36) ADD - klasicky sucet z dvoch vstupov- case 1
+2. (38) ADDI - pricitanie konstanty signed - case 1
+19. (127) SUB - reg1-reg2 , case 2
+
+20.-22. (46-8) CUST1-3 sucty v kombinaciach IO-registre-konstaty - pre ALU iba sucet - case 1 
+
+LOGICAL OPERATIONS
+3. (40) AND - bitovy logicky sucin - AND - case 3
+4. (41) ANDI - bitovy sucin s konstantou 16 bitovou - case 3
+9. (92) OR - logical or of inputs, case 4
+10. (93) ORI - logical or of inputs (constant) case 4
+
+
+
+5. (44) CMOV - conditional move - if SR[F] a na vystup, pri nule b na vystup case 5 ??? co bude tato tu vec, sucast vstupu?
+6. (64) J - jump to N in PC, nebude tu treba pridat nejaku hodnotu naviac? kazdopadne pre ALU case 0, nothing to do here... zatial...
+7. (67) JR - jump to program adress in  reg 2, ALU does shit, case 0
+
+8. (91) NOP - case 0, does shit 
+
+11. (100) SFEQ - porovnava, ak su rovne, vystup jedna, inac nula, case 6
+12. (101) SFEQI -case 6
+15. (118) SFNE - porovnanie nerovnosti registrov, case 7
+16. (119) SFNEI - porovnanie registra s konstantou, case 7
+
+13. (102) SFGES - a vacsie rovne ako reg_2, nastavovanie COMPARE Flagu, case 8
+14. (103) SFGESI - a vacsie rovne ako konstanta, nastavovanie CMP Flag, case 8 (9 ak mensie rovne?)
+
+
+17. (121) SLL - posun A registra o B bitov - case 0x0A (0x0B in case of)
+18. (122) SLLI - posun o konstantu, case 0x0A
+
+
+
+aj rezerva pre opacne instrukcie - 4 bitovy rozsah alu_c
+
