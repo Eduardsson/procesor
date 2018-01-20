@@ -38,7 +38,7 @@ entity decoder is
            addr_2 : out STD_LOGIC_VECTOR (4 downto 0);
            data_inst : out STD_LOGIC_VECTOR (15 downto 0);
            mux_c : out STD_LOGIC_VECTOR (2 downto 0);
-           alu_c : out STD_LOGIC_VECTOR (3 downto 0);
+           alu_c : out STD_LOGIC_VECTOR (4 downto 0);
            write_en : out STD_LOGIC_VECTOR (2 downto 0);
            jump_en : out STD_LOGIC;
            pc_en : out STD_LOGIC);

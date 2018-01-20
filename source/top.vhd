@@ -42,14 +42,14 @@ architecture Behavioral of top is
 signal reg_1, reg_2, result_alu, inst, data_g, reg_g : STD_LOGIC_VECTOR (31 downto 0);
 signal jump_addr, pc, data_inst : STD_LOGIC_VECTOR (15 downto 0);
 signal addr_1, addr_2 : STD_LOGIC_VECTOR (4 downto 0);
-signal alu_c: STD_LOGIC_VECTOR (3 downto 0);
+signal alu_c: STD_LOGIC_VECTOR (4 downto 0);
 signal mux_c, write_en : STD_LOGIC_VECTOR (2 downto 0);
 signal jump_en, pc_en :STD_LOGIC;
 
 component alu
     Port ( reg_1 : in STD_LOGIC_VECTOR (31 downto 0);
            reg_2 : in STD_LOGIC_VECTOR (31 downto 0);
-           alu_c : in STD_LOGIC_VECTOR (3 downto 0);
+           alu_c : in STD_LOGIC_VECTOR (4 downto 0);
            result_alu : out STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
@@ -60,7 +60,7 @@ component decoder is
            addr_2 : out STD_LOGIC_VECTOR (4 downto 0);
            data_inst : out STD_LOGIC_VECTOR (15 downto 0);
            mux_c : out STD_LOGIC_VECTOR (2 downto 0);
-           alu_c : out STD_LOGIC_VECTOR (3 downto 0);
+           alu_c : out STD_LOGIC_VECTOR (4 downto 0);
            write_en : out STD_LOGIC_VECTOR (2 downto 0);
            jump_en : out STD_LOGIC;
            pc_en : out STD_LOGIC);
