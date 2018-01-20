@@ -47,7 +47,45 @@ end reg_field;
 
 architecture Behavioral of reg_field is
 
+    signal data_ram : STD_LOGIC_VECTOR (31 downto 0);
+
+    component ram is
+        port (clk : in std_logic;
+              write_en  : in std_logic;
+              addr   : in std_logic_vector(4 downto 0);
+              data_in  : in std_logic_vector(31 downto 0);
+              data_out  : out std_logic_vector(31 downto 0));
+    end component;
+
 begin
+
+    ram_module_1: ram port map (
+        clk => clk,
+        write_en => write_r,
+        addr => addr_1,
+        data_in => data_alu,
+        data_out => reg_1
+    );
+
+    ram_module_2: ram port map (
+        clk => clk,
+        write_en => write_r,
+        addr => addr_2,
+        data_in => data_alu,
+        data_out => data_ram
+    );
+
+    reg_2 <= data_ram WHEN mux_c ="000" ELSE
+             data_ram WHEN mux_c ="001" ELSE
+             "0000000000000000" & data_inst WHEN mux_c ="010" ELSE
+             data_g WHEN mux_c ="100" ELSE
+             (others => '0');
+
+    reg_g <= data_alu WHEN mux_c ="000" ELSE
+             "0000000000000000" & data_inst WHEN mux_c ="001" ELSE
+             data_alu WHEN mux_c ="010" ELSE
+             data_alu WHEN mux_c ="100" ELSE
+             (others => '0');
 
 
 end Behavioral;
