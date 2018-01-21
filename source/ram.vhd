@@ -41,9 +41,10 @@ begin
             if (write_en = '1') then
                 RAM(to_integer(unsigned(addr))) <= data_in;
             end if;
+            data_out <= RAM(to_integer(unsigned(addr)));
         end if;
     end process;
 
-    data_out <= RAM(to_integer(unsigned(addr)));
+    
 
 end syn;
