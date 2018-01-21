@@ -48,20 +48,20 @@ signal pc_int: STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 
 begin
 
-process (clk, pc_en, jump_en)
-    begin
-        if (clk'event and clk='1') then
-          if (rst='1') then
-            pc_int <= (others => '0');
-          elsif jump_en='1' then
-            pc_int <= jump_addr;
-          elsif pc_en='1' then
-            pc_int <= pc_int + 1;
-          end if;
-        end if;
-    end process;
+  process (clk, pc_en, jump_en)
+  begin
+    if (clk'event and clk='1') then
+      if (rst='1') then
+        pc_int <= (others => '0');
+      elsif jump_en='1' then
+        pc_int <= jump_addr;
+      elsif pc_en='1' then
+        pc_int <= pc_int + 1;
+      end if;
+    end if;
+  end process;
 
-    pc <= pc_int;
+  pc <= pc_int;
 
 
 end Behavioral;

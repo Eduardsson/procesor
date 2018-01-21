@@ -32,7 +32,7 @@ end ram;
 
 architecture syn of ram is
     type ram_type is array (31 downto 0) of std_logic_vector (31 downto 0);
-    signal RAM : ram_type;
+    signal RAM : ram_type := (others => (others => '0'));
 begin
 
     process (clk)
@@ -41,6 +41,7 @@ begin
             if (write_en = '1') then
                 RAM(to_integer(unsigned(addr))) <= data_in;
             end if;
+            
         end if;
     end process;
 

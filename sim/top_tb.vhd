@@ -66,7 +66,7 @@ begin
     
       -- Put initialisation code here
 
-      wait for 20*clock_period;
+      wait for 10000*clock_period;
     
       -- Put test bench stimulus code here
     
