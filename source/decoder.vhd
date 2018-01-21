@@ -58,8 +58,9 @@ architecture Behavioral of decoder is
     signal s_addr_1, s_addr_2 : STD_LOGIC_VECTOR (4 downto 0);
     signal rst : STD_LOGIC;
     
-    signal nop_cnt : STD_LOGIC_VECTOR (15 downto 0) := x"00_01";
+    signal nop_cnt : STD_LOGIC_VECTOR (15 downto 0) := x"00_02";
     signal nop_cnt_en : STD_LOGIC := '0';
+    signal nop_cnt_done : STD_LOGIC := '0';
 
  
 begin
@@ -79,12 +80,13 @@ begin
        end if;
     end process;
  
-    STATE_DECODE: process (state, inst)
+    STATE_DECODE: process (state, inst, nop_cnt_done)
     begin
         next_state <= state;  --default is to stay in current state
 
         case (state) is
             when init =>
+                
                 --instructions beginning with opcode 0x38
                 if inst(31 downto 26) = "111000" then
 
@@ -121,6 +123,8 @@ begin
 
                 write_en <= "000";
                 pc_en <= '0';
+                
+                nop_cnt_en <= '0';
 
             when add_s1 =>
                     s_addr_1 <= inst(20 downto 16);  -- rA
@@ -217,12 +221,18 @@ begin
             -- NOP
                                     
             when nop_s1 =>
+                    if nop_cnt_done = '1' then
+                        nop_cnt_en <= '0';
+                        pc_en <= '1';
+                        next_state <= init;
+                    else
+                       pc_en <= '0';
+                       nop_cnt_en <= '1'; 
+                    end if;
                     alu_c <= "00000";
                     write_en <= "000";
                     
-                    pc_en <= '0';
-                    nop_cnt_en <= '1';
-                    next_state <= nop_s1;
+                    
             when others =>
                 next_state <= init;
         end case;
@@ -231,16 +241,24 @@ begin
     
     NOP_COUNTER: process (clk, nop_cnt_en)
     begin
-        if clk='1' and clk'event and nop_cnt_en = '1' then
-            if (nop_cnt = inst(15 downto 0)) then
-                nop_cnt_en <= '0';
-                pc_en <= '1';
-                next_state <= init;
-            elsif nop_cnt <= x"FF_FF" then
-                nop_cnt <= std_logic_vector(unsigned(nop_cnt) + 1);
+
+        
+        if clk='1' and clk'event then
+            if nop_cnt_en = '0' then
+                nop_cnt_done <= '0';
                 
+            elsif (nop_cnt = inst(15 downto 0) and nop_cnt_en = '1') then
+                nop_cnt_done <= '1';
+                nop_cnt <= x"0001";
+            
+            elsif nop_cnt <= x"FF_FF" and nop_cnt_en = '1' then
+                nop_cnt <= std_logic_vector(unsigned(nop_cnt) + 1);    
             end if;
+            
+            
         end if;
+        
+        
     end process; 
 
 
