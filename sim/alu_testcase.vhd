@@ -12,12 +12,14 @@ architecture bench of alu_tb is
       Port ( reg_1 : in STD_LOGIC_VECTOR (31 downto 0);
              reg_2 : in STD_LOGIC_VECTOR (31 downto 0);
              alu_c : in STD_LOGIC_VECTOR (4 downto 0);
+             cmp_flag : out STD_LOGIC;
              result_alu : out STD_LOGIC_VECTOR (31 downto 0));
   end component;
 
   signal reg_1: STD_LOGIC_VECTOR (31 downto 0);
   signal reg_2: STD_LOGIC_VECTOR (31 downto 0);
   signal alu_c: STD_LOGIC_VECTOR (4 downto 0);
+  signal cmp_flag : STD_LOGIC;
   signal result_alu: STD_LOGIC_VECTOR (31 downto 0);
 
 begin
@@ -25,6 +27,7 @@ begin
   uut: alu port map ( reg_1      => reg_1,
                       reg_2      => reg_2,
                       alu_c      => alu_c,
+                      cmp_flag   => cmp_flag,
                       result_alu => result_alu );
 
   stimulus: process

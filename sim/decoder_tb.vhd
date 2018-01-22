@@ -39,6 +39,7 @@ architecture Behavioral of decoder_tb is
 
     component decoder is
         Port ( inst : in STD_LOGIC_VECTOR (31 downto 0);
+               cmp_flag : in STD_LOGIC;
                clk : in STD_LOGIC;
                addr_1 : out STD_LOGIC_VECTOR (4 downto 0);
                addr_2 : out STD_LOGIC_VECTOR (4 downto 0);
@@ -52,6 +53,7 @@ architecture Behavioral of decoder_tb is
 
 
     signal inst : STD_LOGIC_VECTOR (31 downto 0);
+    signal cmp_flag : STD_LOGIC;
     signal clk : STD_LOGIC;
     signal addr_1 : STD_LOGIC_VECTOR (4 downto 0);
     signal addr_2 : STD_LOGIC_VECTOR (4 downto 0);
@@ -69,6 +71,7 @@ begin
 
     decoder_module: decoder port map (
         inst => inst,
+        cmp_flag => cmp_flag,
         clk => clk,
         addr_1 => addr_1,
         addr_2 => addr_2,
