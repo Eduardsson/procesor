@@ -53,7 +53,7 @@ end decoder;
 
 architecture Behavioral of decoder is
 
-    type state_type is (init, add_s1, add_s2, and_s1, and_s2, andi_s1, andi_s2, cmov_s1, nop_s1, nop_s2, or_s1, or_s2, ori_s1, ori_s2, srl_s1, sll_s1, sub_s1, addi_s1, addi_s2, j_s1, cust1_s1, cust1_s2, cust2_s1, cust2_s2, cust3_s1, cust3_s2, cust4_s1, cust4_s2, cust5_s1, cust5_s2, sfeq_s1, sfeqi_s1, sfne_s1, sfnei_s1, sfges_s1, sfgesi_s1, sf_s2);
+    type state_type is (init, add_s1, mth_s2, and_s1, andi_s1, cmov_s1, nop_s1, nop_s2, or_s1, ori_s1, srl_s1, sll_s1, sub_s1, addi_s1, j_s1, cust1_s1, cust13_s2, cust2_s1, cust3_s1, cust4_s1, cust45_s2, cust5_s1, sfeq_s1, sfeqi_s1, sfne_s1, sfnei_s1, sfges_s1, sfgesi_s1, sf_s2);
     signal state, next_state : state_type;
 
     signal s_addr_1, s_addr_2 : STD_LOGIC_VECTOR (4 downto 0);
@@ -160,9 +160,9 @@ begin
                     alu_c <= "00001";
                     write_en <= "000";
 
-                    next_state <= add_s2;
+                    next_state <= mth_s2;
 
-            when add_s2 =>
+            when mth_s2 =>
                     s_addr_1 <= inst(25 downto 21);  -- rD
                     s_addr_2 <= inst(25 downto 21);  -- rD
                     write_en <= "001";
@@ -179,15 +179,7 @@ begin
                     alu_c <= "00001";
                     write_en <= "000";
 
-                    next_state <= addi_s2;
-
-            when addi_s2 =>
-                    s_addr_1 <= inst(25 downto 21);  -- rD
-                    s_addr_2 <= inst(25 downto 21);  -- rD
-                    write_en <= "001";
-
-                    pc_en <= '1';
-                    next_state <= init;
+                    next_state <= mth_s2;
 
             -- AND rD, rA, rB -----------------------------
             
@@ -198,15 +190,7 @@ begin
                     alu_c <= "00011";
                     write_en <= "000";
                     
-                    next_state <= and_s2;
-            
-            when and_s2 =>
-                    s_addr_1 <= inst(25 downto 21);  -- rD
-                    s_addr_2 <= inst(25 downto 21);  -- rD
-                    write_en <= "001";
-                    
-                    pc_en <= '1';
-                    next_state <= init;
+                    next_state <= mth_s2;
                     
             -- ANDI rD, rA, I -----------------------------
             
@@ -217,15 +201,7 @@ begin
                     alu_c <= "00011";
                     write_en <= "000";
                                 
-                    next_state <= andi_s2;
-                    
-            when andi_s2 =>
-                    s_addr_1 <= inst(25 downto 21);  -- rD
-                    s_addr_2 <= inst(25 downto 21);  -- rD
-                    write_en <= "001";
-                                        
-                    pc_en <= '1';
-                    next_state <= init;
+                    next_state <= mth_s2;
             
             -- OR rD, rA, rB -----------------------------
             when or_s1 =>
@@ -235,15 +211,7 @@ begin
                     alu_c <= "00100";
                     write_en <= "000";
                                
-                    next_state <= or_s2;
-                        
-            when or_s2 =>
-                    s_addr_1 <= inst(25 downto 21);  -- rD
-                    s_addr_2 <= inst(25 downto 21);  -- rD
-                    write_en <= "001";
-                                
-                    pc_en <= '1';
-                    next_state <= init;
+                    next_state <= mth_s2;
             
             -- ORI rD, rA, I -----------------------------
             
@@ -254,15 +222,7 @@ begin
                     alu_c <= "00100";
                     write_en <= "000";
                                             
-                    next_state <= ori_s2;
-                                
-            when ori_s2 =>
-                    s_addr_1 <= inst(25 downto 21);  -- rD
-                    s_addr_2 <= inst(25 downto 21);  -- rD
-                    write_en <= "001";
-                                                    
-                    pc_en <= '1';
-                    next_state <= init;
+                    next_state <= mth_s2;
             
             -- NOP
                                     
@@ -296,9 +256,9 @@ begin
                     alu_c <= "00001";
                     write_en <= "000";
 
-                    next_state <= cust1_s2;
+                    next_state <= cust13_s2;
 
-            when cust1_s2 =>
+            when cust13_s2 =>
                     write_en <= "010";
 
                     pc_en <= '1';
@@ -312,15 +272,7 @@ begin
                     alu_c <= "00001";
                     write_en <= "000";
 
-                    next_state <= cust2_s2;
-
-            when cust2_s2 =>
-                    s_addr_1 <= inst(25 downto 21);  -- rD
-                    s_addr_2 <= inst(25 downto 21);  -- rD
-                    write_en <= "001";
-
-                    pc_en <= '1';
-                    next_state <= init;
+                    next_state <= mth_s2;
 
             -- CUST3 rA, I -----------------------------
 
@@ -331,13 +283,7 @@ begin
                     alu_c <= "00001";
                     write_en <= "000";
 
-                    next_state <= cust3_s2;
-
-            when cust3_s2 =>
-                    write_en <= "010";
-
-                    pc_en <= '1';
-                    next_state <= init;
+                    next_state <= cust13_s2;
 
             -- CUST4 rA, rB -----------------------------
 
@@ -348,9 +294,9 @@ begin
                     alu_c <= "00001";
                     write_en <= "000";
 
-                    next_state <= cust4_s2;
+                    next_state <= cust45_s2;
 
-            when cust4_s2 =>
+            when cust45_s2 =>
                     write_en <= "100";
 
                     pc_en <= '1';
@@ -366,13 +312,7 @@ begin
                     alu_c <= "00001";
                     write_en <= "000";
 
-                    next_state <= cust5_s2;
-
-            when cust5_s2 =>
-                    write_en <= "100";
-
-                    pc_en <= '1';
-                    next_state <= init;                    
+                    next_state <= cust45_s2;                   
             
             -- SFEQ rA, rB (sets cmp_flag) -------------
             
@@ -446,6 +386,38 @@ begin
                     write_en <= "000";
 
                     next_state <= sf_s2;                    
+            
+            -- SUB rD, rA, rB -----------------------------
+
+            when sub_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    s_addr_2 <= inst(15 downto 11);  -- rB
+                    mux_c <= "000";
+                    alu_c <= "00010";
+                    write_en <= "000";
+
+                    next_state <= mth_s2;
+            -- SLL rD, rA, rB -----------------------------
+
+            when sll_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    s_addr_2 <= inst(15 downto 11);  -- rB
+                    mux_c <= "000";
+                    alu_c <= "01010";
+                    write_en <= "000";
+
+                    next_state <= mth_s2;
+
+            -- SRL rD, rA, rB -----------------------------
+
+            when srl_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    s_addr_2 <= inst(15 downto 11);  -- rB
+                    mux_c <= "000";
+                    alu_c <= "01011";
+                    write_en <= "000";
+
+                    next_state <= mth_s2;
 
             when others =>
                 next_state <= init;

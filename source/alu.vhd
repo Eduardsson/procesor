@@ -106,6 +106,10 @@ begin
         -- left shift - interpretation? now can shift 31bits to the left, or make shift of each byte separately?     
         elsif (alu_c(3 downto 0) = x"A") then
             result_alu <= std_logic_vector(unsigned(reg_1) sll to_integer(unsigned(reg_2(4 downto 0))));
+        
+        -- right shift - interpretation? now can shift 31bits to the left, or make shift of each byte separately?     
+        elsif (alu_c(3 downto 0) = x"B") then
+            result_alu <= std_logic_vector(unsigned(reg_1) srl to_integer(unsigned(reg_2(4 downto 0))));
 
         else
             result_alu <= x"0000_0000";
