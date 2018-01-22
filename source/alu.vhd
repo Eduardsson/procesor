@@ -44,7 +44,7 @@ architecture Behavioral of alu is
         
 begin
     
-    process(alu_c, reg_1, reg_2)
+    process(reg_1, reg_2, alu_c)
         --variable shift : std_logic_vector(2 downto 0);
     begin
         -- plus - good

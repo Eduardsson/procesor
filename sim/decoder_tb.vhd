@@ -97,6 +97,52 @@ begin
   wait for clock_period;
   wait for clock_period;
   wait for clock_period;
+  
+  --AND
+  inst <= "11100000001010000100100000000011";
+  
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  --ANDI
+  inst <= "10100101111100001010101011111100";
+    
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+    
+  --OR  
+  inst <= "11100000001010000100100000000100";
+      
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  --ORI    
+  inst <= "10101001001010011011000000000000";
+      
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+        
+  --NOP      
+  inst <= "00010101000000000000000000000100";
+          
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+  wait for clock_period;
+
+ 
+  
+  
   wait for clock_period;
 
   -- Put test bench stimulus code here

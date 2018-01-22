@@ -41,7 +41,6 @@ begin
             if (write_en = '1') then
                 RAM(to_integer(unsigned(addr))) <= data_in;
             end if;
-            
         end if;
     end process;
 
