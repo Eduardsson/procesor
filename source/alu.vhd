@@ -37,6 +37,7 @@ entity alu is
     Port ( reg_1 : in STD_LOGIC_VECTOR (31 downto 0);
            reg_2 : in STD_LOGIC_VECTOR (31 downto 0);
            alu_c : in STD_LOGIC_VECTOR (4 downto 0);
+           cmp_flag : out STD_LOGIC;
            result_alu : out STD_LOGIC_VECTOR (31 downto 0));
 end alu;
 
@@ -75,25 +76,31 @@ begin
         -- compare equal - good
         elsif (alu_c(3 downto 0) = x"6") then
             if (reg_1 = reg_2) then
-                result_alu <= x"0000_0001";
+                result_alu <= x"0000_0000";
+                cmp_flag <= '1';
             else
                 result_alu <= x"0000_0000";
+                cmp_flag <= '0';
             end if;
         
         -- compare not equal - good    
         elsif (alu_c(3 downto 0) = x"7") then
             if (reg_1 /= reg_2) then
-                result_alu <= x"0000_0001";
+                result_alu <= x"0000_0000";
+                cmp_flag <= '1';
             else
                 result_alu <= x"0000_0000";
+                cmp_flag <= '0';
             end if;
         
         -- compare bigger - good    
         elsif (alu_c(3 downto 0) = x"8") then
             if (reg_1 >= reg_2) then
-                result_alu <= x"0000_0001";
+                result_alu <= x"0000_0000";
+                cmp_flag <= '1';
             else
                 result_alu <= x"0000_0000";
+                cmp_flag <= '0';
             end if;
         
         -- left shift - interpretation? now can shift 31bits to the left, or make shift of each byte separately?     

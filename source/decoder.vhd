@@ -39,6 +39,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity decoder is
     Port ( inst : in STD_LOGIC_VECTOR (31 downto 0);
+           cmp_flag : in STD_LOGIC;
            clk : in STD_LOGIC;
            addr_1 : out STD_LOGIC_VECTOR (4 downto 0);
            addr_2 : out STD_LOGIC_VECTOR (4 downto 0);
@@ -52,7 +53,7 @@ end decoder;
 
 architecture Behavioral of decoder is
 
-    type state_type is (init, add_s1, add_s2, and_s1, and_s2, andi_s1, andi_s2, cmov_s1, nop_s1, nop_s2, or_s1, or_s2, ori_s1, ori_s2, srl_s1, sll_s1, sub_s1, addi_s1, addi_s2, j_s1, cust1_s1, cust1_s2, cust2_s1, cust2_s2, cust3_s1, cust3_s2, cust4_s1, cust4_s2, cust5_s1, cust5_s2);
+    type state_type is (init, add_s1, add_s2, and_s1, and_s2, andi_s1, andi_s2, cmov_s1, nop_s1, nop_s2, or_s1, or_s2, ori_s1, ori_s2, srl_s1, sll_s1, sub_s1, addi_s1, addi_s2, j_s1, cust1_s1, cust1_s2, cust2_s1, cust2_s2, cust3_s1, cust3_s2, cust4_s1, cust4_s2, cust5_s1, cust5_s2, sfeq_s1, sfeqi_s1, sfne_s1, sfnei_s1, sfges_s1, sfgesi_s1, sf_s2);
     signal state, next_state : state_type;
 
     signal s_addr_1, s_addr_2 : STD_LOGIC_VECTOR (4 downto 0);
@@ -62,6 +63,7 @@ architecture Behavioral of decoder is
     signal nop_cnt_en : STD_LOGIC := '0';
     signal nop_cnt_done : STD_LOGIC := '0';
 
+    signal cmp_flag_reg : STD_LOGIC := '0';
  
 begin
 
@@ -80,7 +82,7 @@ begin
        end if;
     end process;
  
-    STATE_DECODE: process (state, inst, nop_cnt_done)
+    STATE_DECODE: process (state, inst, nop_cnt_done, cmp_flag)
     begin
         next_state <= state;  --default is to stay in current state
 
@@ -130,7 +132,18 @@ begin
                     next_state <= cust4_s1;  
                 elsif inst(31 downto 26) = "111101" then    -- CUST5
                     next_state <= cust5_s1;
-                                                      
+                elsif inst(31 downto 21) = "11100100000" then    -- SFEQ
+                    next_state <= sfeq_s1;       
+                elsif inst(31 downto 21) = "10111100000" then    -- SFEQI
+                    next_state <= sfeqi_s1;                               
+                elsif inst(31 downto 21) = "11100100001" then    -- SFNE
+                    next_state <= sfne_s1;
+                elsif inst(31 downto 21) = "10111100001" then    -- SFNEI
+                    next_state <= sfnei_s1;
+                elsif inst(31 downto 21) = "11100101011" then    -- SFGES
+                    next_state <= sfges_s1;
+                elsif inst(31 downto 21) = "10111101011" then    -- SFGESI
+                    next_state <= sfgesi_s1;
                 end if;
 
                 write_en <= "000";
@@ -360,7 +373,80 @@ begin
 
                     pc_en <= '1';
                     next_state <= init;                    
-                    
+            
+            -- SFEQ rA, rB (sets cmp_flag) -------------
+            
+            when sfeq_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    s_addr_2 <= inst(15 downto 11);  -- rB
+                    mux_c <= "000";
+                    alu_c <= "00110";
+                    write_en <= "000";
+
+                    next_state <= sf_s2;
+
+            when sf_s2 =>
+                    cmp_flag_reg <= cmp_flag;
+                    pc_en <= '1';
+                    next_state <= init;                    
+
+            -- SFEQI rA, I (sets cmp_flag) -------------
+            
+            when sfeqi_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    data_inst <= inst(15 downto 0);  -- I
+                    mux_c <= "010";
+                    alu_c <= "00110";
+                    write_en <= "000";
+
+                    next_state <= sf_s2;                  
+
+            -- SFNE rA, rB (sets cmp_flag) -------------  
+                  
+            when sfne_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    s_addr_2 <= inst(15 downto 11);  -- rB
+                    mux_c <= "000";
+                    alu_c <= "00111";
+                    write_en <= "000";
+
+                    next_state <= sf_s2;                  
+
+            -- SFNEI rA, I (sets cmp_flag) -------------
+            
+            when sfnei_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    data_inst <= inst(15 downto 0);  -- I
+                    mux_c <= "010";
+                    alu_c <= "00111";
+                    write_en <= "000";
+
+                    next_state <= sf_s2;                   
+
+            
+            -- SFGES rA, rB (sets cmp_flag) ------------
+            
+            when sfges_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    s_addr_2 <= inst(15 downto 11);  -- rB
+                    mux_c <= "000";
+                    alu_c <= "01000";
+                    write_en <= "000";
+
+                    next_state <= sf_s2;
+                   
+
+            -- SFGESI rA, I (sets cmp_flag) ------------
+            
+            when sfgesi_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    data_inst <= inst(15 downto 0);  -- I
+                    mux_c <= "010";
+                    alu_c <= "01000";
+                    write_en <= "000";
+
+                    next_state <= sf_s2;                    
+
             when others =>
                 next_state <= init;
         end case;
