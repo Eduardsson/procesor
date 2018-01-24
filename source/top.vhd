@@ -66,6 +66,7 @@ component decoder is
            alu_c : out STD_LOGIC_VECTOR (4 downto 0);
            write_en : out STD_LOGIC_VECTOR (2 downto 0);
            jump_en : out STD_LOGIC;
+           cmp_flag_reg: out STD_LOGIC;
            pc_en : out STD_LOGIC);
 end component;
 

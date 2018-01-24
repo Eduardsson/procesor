@@ -48,6 +48,7 @@ architecture Behavioral of decoder_tb is
                alu_c : out STD_LOGIC_VECTOR (4 downto 0);
                write_en : out STD_LOGIC_VECTOR (2 downto 0);
                jump_en : out STD_LOGIC;
+               cmp_flag_reg : out STD_LOGIC;
                pc_en : out STD_LOGIC);
     end component;
 
@@ -63,6 +64,7 @@ architecture Behavioral of decoder_tb is
     signal write_en : STD_LOGIC_VECTOR (2 downto 0);
     signal jump_en : STD_LOGIC;
     signal pc_en : STD_LOGIC;
+    signal cmp_flag_reg : STD_LOGIC;
 
     constant clock_period: time := 10 ns;
     signal stop_the_clock: boolean;
@@ -80,6 +82,7 @@ begin
         alu_c => alu_c,
         write_en => write_en,
         jump_en => jump_en,
+        cmp_flag_reg => cmp_flag_reg,
         pc_en => pc_en
     );
 
