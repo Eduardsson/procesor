@@ -79,7 +79,6 @@ begin
     io(29) <= s_cpu_o(29) when s_cpu_o_enable(29) = '0' else 'Z';
     io(30) <= s_cpu_o(30) when s_cpu_o_enable(30) = '0' else 'Z';
     io(31) <= s_cpu_o(31) when s_cpu_o_enable(31) = '0' else 'Z';
-    cpu_i <= io;
 
     process(clk)
     begin
@@ -92,6 +91,7 @@ begin
         elsif write_t='1' then
             s_cpu_o_enable <= cpu_o;
         end if;
+        cpu_i <= io;
     end if;
     end process;
 

@@ -52,7 +52,7 @@ end decoder;
 
 architecture Behavioral of decoder is
 
-    type state_type is (init, add_s1, add_s2, and_s1, and_s2, andi_s1, andi_s2, cmov_s1, nop_s1, nop_s2, or_s1, or_s2, ori_s1, ori_s2, srl_s1, sll_s1, sub_s1, addi_s1, addi_s2, j_s1, cust1_s1, cust1_s2, cust2_s1, cust2_s2, cust3_s1, cust3_s2, cust4_s1, cust4_s2, cust5_s1, cust5_s2);
+    type state_type is (init, add_s1, add_s2, and_s1, and_s2, andi_s1, andi_s2, cmov_s1, nop_s1, nop_s2, or_s1, or_s2, ori_s1, ori_s2, srl_s1, sll_s1, sll_s2, sub_s1, addi_s1, addi_s2, j_s1, cust1_s1, cust1_s2, cust2_s1, cust2_s2, cust3_s1, cust3_s2, cust4_s1, cust4_s2, cust5_s1, cust5_s2);
     signal state, next_state : state_type;
 
     signal s_addr_1, s_addr_2 : STD_LOGIC_VECTOR (4 downto 0);
@@ -264,6 +264,25 @@ begin
                     end if;
                     alu_c <= "00000";
                     write_en <= "000";
+
+            -- SLL rD, rA, rB -----------------------------
+
+            when sll_s1 =>
+                    s_addr_1 <= inst(20 downto 16);  -- rA
+                    s_addr_2 <= inst(15 downto 11);  -- rB
+                    mux_c <= "000";
+                    alu_c <= "01010";
+                    write_en <= "000";
+
+                    next_state <= sll_s2;
+
+            when sll_s2 =>
+                    s_addr_1 <= inst(25 downto 21);  -- rD
+                    s_addr_2 <= inst(25 downto 21);  -- rD
+                    write_en <= "001";
+
+                    pc_en <= '1';
+                    next_state <= init;
             
             -- J N -----------------------------
 

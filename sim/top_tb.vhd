@@ -63,6 +63,10 @@ begin
     begin
 
         rst <= '0';
+
+        pins(15 downto 0) <= (others => '1');
+
+        pins(1 downto 0) <= (others => '0');
     
       -- Put initialisation code here
 

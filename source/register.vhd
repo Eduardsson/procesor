@@ -40,6 +40,7 @@ entity reg_field is
            mux_c : in STD_LOGIC_VECTOR (2 downto 0);
            write_r : in STD_LOGIC;
            clk : in STD_LOGIC;
+           rst : in std_logic;
            reg_1 : out STD_LOGIC_VECTOR (31 downto 0);
            reg_2 : out STD_LOGIC_VECTOR (31 downto 0);
            reg_g : out STD_LOGIC_VECTOR (31 downto 0));
@@ -47,10 +48,11 @@ end reg_field;
 
 architecture Behavioral of reg_field is
 
-    signal data_ram : STD_LOGIC_VECTOR (31 downto 0);
+    signal data_ram, s_data_alu : STD_LOGIC_VECTOR (31 downto 0);
 
     component ram is
         port (clk : in std_logic;
+              rst : in std_logic;
               write_en  : in std_logic;
               addr   : in std_logic_vector(4 downto 0);
               data_in  : in std_logic_vector(31 downto 0);
@@ -61,17 +63,19 @@ begin
 
     ram_module_1: ram port map (
         clk => clk,
+        rst => rst,
         write_en => write_r,
         addr => addr_1,
-        data_in => data_alu,
+        data_in => s_data_alu,
         data_out => reg_1
     );
 
     ram_module_2: ram port map (
         clk => clk,
+        rst => rst,
         write_en => write_r,
         addr => addr_2,
-        data_in => data_alu,
+        data_in => s_data_alu,
         data_out => data_ram
     );
 
@@ -86,6 +90,13 @@ begin
              data_alu WHEN mux_c ="010" ELSE
              data_alu WHEN mux_c ="100" ELSE
              (others => '0');
+
+    process (clk)
+    begin
+        if (clk'event and clk = '1') then
+            s_data_alu <= data_alu;
+        end if;
+    end process;
 
 
 end Behavioral;
