@@ -21,13 +21,17 @@ LOGICAL OPERATIONS
 8. (91) NOP - case 0, does shit 
 
 11. (100) SFEQ - porovnava, ak su rovne, vystup jedna, inac nula, case 6
+11'0x720,5'A,5'B,11'reserved
 12. (101) SFEQI -case 6
+11'0x5e0,5'A,16'I
 15. (118) SFNE - porovnanie nerovnosti registrov, case 7
+11'0x721,5a,5b,11res
 16. (119) SFNEI - porovnanie registra s konstantou, case 7
-
+11'0x5e1,5a,11i
 13. (102) SFGES - a vacsie rovne ako reg_2, nastavovanie COMPARE Flagu, case 8
+11''0x72b,5'A,5'B,11'reserved
 14. (103) SFGESI - a vacsie rovne ako konstanta, nastavovanie CMP Flag, case 8 (9 ak mensie rovne?)
-
+11'0x5eb, 5'A, 16'I
 
 17. (121) SLL - posun A registra o B bitov - case 0x0A (0x0B in case of)
 18. (122) SLLI - posun o konstantu, case 0x0A

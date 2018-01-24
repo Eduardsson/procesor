@@ -45,16 +45,19 @@ signal addr_1, addr_2 : STD_LOGIC_VECTOR (4 downto 0);
 signal alu_c: STD_LOGIC_VECTOR (4 downto 0);
 signal mux_c, write_en : STD_LOGIC_VECTOR (2 downto 0);
 signal jump_en, pc_en :STD_LOGIC;
+signal cmp_flag: STD_LOGIC;
 
 component alu
     Port ( reg_1 : in STD_LOGIC_VECTOR (31 downto 0);
            reg_2 : in STD_LOGIC_VECTOR (31 downto 0);
            alu_c : in STD_LOGIC_VECTOR (4 downto 0);
+           cmp_flag : out STD_LOGIC;
            result_alu : out STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
 component decoder is
     Port ( inst : in STD_LOGIC_VECTOR (31 downto 0);
+           cmp_flag : in STD_LOGIC; 
            clk : in STD_LOGIC;
            addr_1 : out STD_LOGIC_VECTOR (4 downto 0);
            addr_2 : out STD_LOGIC_VECTOR (4 downto 0);
@@ -112,11 +115,13 @@ alu_module: alu port map (
     reg_1 => reg_1,
     reg_2 => reg_2,
     alu_c => alu_c,
+    cmp_flag => cmp_flag,
     result_alu => result_alu
 );
 
 decoder_module: decoder port map (
     inst => inst,
+    cmp_flag => cmp_flag,
     clk => clk,
     addr_1 => addr_1,
     addr_2 => addr_2,
