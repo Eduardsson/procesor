@@ -51,7 +51,6 @@ component alu
     Port ( reg_1 : in STD_LOGIC_VECTOR (31 downto 0);
            reg_2 : in STD_LOGIC_VECTOR (31 downto 0);
            alu_c : in STD_LOGIC_VECTOR (4 downto 0);
-           cmp_flag : out STD_LOGIC;
            result_alu : out STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
@@ -116,13 +115,12 @@ alu_module: alu port map (
     reg_1 => reg_1,
     reg_2 => reg_2,
     alu_c => alu_c,
-    cmp_flag => cmp_flag,
     result_alu => result_alu
 );
 
 decoder_module: decoder port map (
     inst => inst,
-    cmp_flag => cmp_flag,
+    cmp_flag => result_alu(0),
     clk => clk,
     addr_1 => addr_1,
     addr_2 => addr_2,
