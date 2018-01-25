@@ -52,7 +52,6 @@ architecture Behavioral of reg_field is
 
     component ram is
         port (clk : in std_logic;
-              rst : in std_logic;
               write_en  : in std_logic;
               addr   : in std_logic_vector(4 downto 0);
               data_in  : in std_logic_vector(31 downto 0);
@@ -63,7 +62,6 @@ begin
 
     ram_module_1: ram port map (
         clk => clk,
-        rst => rst,
         write_en => write_r,
         addr => addr_1,
         data_in => s_data_alu,
@@ -72,7 +70,6 @@ begin
 
     ram_module_2: ram port map (
         clk => clk,
-        rst => rst,
         write_en => write_r,
         addr => addr_2,
         data_in => s_data_alu,

@@ -59,6 +59,7 @@ component decoder is
     Port ( inst : in STD_LOGIC_VECTOR (31 downto 0);
            cmp_flag : in STD_LOGIC; 
            clk : in STD_LOGIC;
+           rst : in STD_LOGIC;
            addr_1 : out STD_LOGIC_VECTOR (4 downto 0);
            addr_2 : out STD_LOGIC_VECTOR (4 downto 0);
            data_inst : out STD_LOGIC_VECTOR (15 downto 0);
@@ -124,6 +125,7 @@ decoder_module: decoder port map (
     inst => inst,
     cmp_flag => cmp_flag,
     clk => clk,
+    rst => rst,
     addr_1 => addr_1,
     addr_2 => addr_2,
     data_inst => data_inst,

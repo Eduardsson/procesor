@@ -24,7 +24,6 @@ use ieee.numeric_std.all;
 
 entity ram is
     port (clk : in STD_LOGIC;
-          rst : in STD_LOGIC;
           write_en  : in STD_LOGIC;
           addr   : in STD_LOGIC_VECTOR(4 downto 0);
           data_in  : in STD_LOGIC_VECTOR(31 downto 0);
