@@ -34,7 +34,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity top is
     Port ( clk : in STD_LOGIC;
            rst : in STD_LOGIC;
+           dp : out STD_LOGIC;
+           an : out STD_LOGIC_VECTOR (3 downto 0);
+           segm : out STD_LOGIC_VECTOR (6 downto 0);
            pins : inout STD_LOGIC_VECTOR (31 downto 0));
+        
 end top;
 
 architecture Behavioral of top is
@@ -43,9 +47,11 @@ signal reg_1, reg_2, result_alu, inst, data_g, reg_g : STD_LOGIC_VECTOR (31 down
 signal jump_addr, pc, data_inst : STD_LOGIC_VECTOR (15 downto 0);
 signal addr_1, addr_2 : STD_LOGIC_VECTOR (4 downto 0);
 signal alu_c: STD_LOGIC_VECTOR (4 downto 0);
-signal mux_c, write_en : STD_LOGIC_VECTOR (2 downto 0);
+signal mux_c : STD_LOGIC_VECTOR (2 downto 0);
+signal write_en : STD_LOGIC_VECTOR (3 downto 0);
 signal jump_en, pc_en :STD_LOGIC;
 signal cmp_flag: STD_LOGIC;
+signal disp_number : STD_LOGIC_VECTOR (15 downto 0) := x"CAFE";
 
 component alu
     Port ( reg_1 : in STD_LOGIC_VECTOR (31 downto 0);
@@ -64,7 +70,7 @@ component decoder is
            data_inst : out STD_LOGIC_VECTOR (15 downto 0);
            mux_c : out STD_LOGIC_VECTOR (2 downto 0);
            alu_c : out STD_LOGIC_VECTOR (4 downto 0);
-           write_en : out STD_LOGIC_VECTOR (2 downto 0);
+           write_en : out STD_LOGIC_VECTOR (3 downto 0);
            jump_en : out STD_LOGIC;
            cmp_flag_reg: out STD_LOGIC;
            pc_en : out STD_LOGIC);
@@ -109,6 +115,14 @@ component rom is
             inst : out STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
+component display_driver is
+    Port ( clk : in STD_LOGIC;
+           rst : in STD_LOGIC;
+           write_dr : in STD_LOGIC;
+           disp_number: in STD_LOGIC_VECTOR (15 downto 0);
+           an : out STD_LOGIC_VECTOR (3 downto 0);
+           segm : out STD_LOGIC_VECTOR (6 downto 0));
+end component;
 
 begin
 
@@ -172,6 +186,17 @@ rom_module: rom port map (
     pc => pc,
     inst => inst
 );
+
+display_driver_module : display_driver port map (
+    clk => clk,
+    rst => rst,
+    write_dr => write_en(3),
+    disp_number => reg_g(15 downto 0),
+    an => an,
+    segm => segm
+);
+
+dp <= '1';
 
 
 

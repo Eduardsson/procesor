@@ -47,7 +47,7 @@ entity decoder is
            data_inst : out STD_LOGIC_VECTOR (15 downto 0);
            mux_c : out STD_LOGIC_VECTOR (2 downto 0);
            alu_c : out STD_LOGIC_VECTOR (4 downto 0);
-           write_en : out STD_LOGIC_VECTOR (2 downto 0);
+           write_en : out STD_LOGIC_VECTOR (3 downto 0);
            jump_en : out STD_LOGIC;
            cmp_flag_reg : out STD_LOGIC;
            pc_en : out STD_LOGIC);
@@ -97,7 +97,7 @@ begin
             mux_c <= (others => '0');
             alu_c <= "00000";
             
-            write_en <= "000";
+            write_en <= "0000";
             pc_en <= '0';
             jump_en <= '0';                
             counter <= x"0020";
@@ -122,7 +122,7 @@ begin
                             s_addr_2 <= inst(15 downto 11);     -- rB
                             mux_c <= "000";
                             alu_c <= "00001";
-                            write_en <= "000";
+                            write_en <= "0000";
                             
                             next_state <= mth_s2;
 
@@ -139,7 +139,7 @@ begin
                             s_addr_2 <= inst(25 downto 21);  -- rB
                             mux_c <= "000";
                             alu_c <= "00011";
-                            write_en <= "000";
+                            write_en <= "0000";
                             
                             next_state <= mth_s2;
 
@@ -151,7 +151,7 @@ begin
                             mux_c <= (others => '0');
                             alu_c <= "00000";
                             
-                            write_en <= "000";
+                            write_en <= "0000";
                             pc_en <= '0';
                             jump_en <= '0';                
                             counter <= x"0000";
@@ -169,7 +169,7 @@ begin
                             s_addr_2 <= inst(25 downto 21);  -- rB
                             mux_c <= "000";
                             alu_c <= "00100";
-                            write_en <= "000";
+                            write_en <= "0000";
                                     
                             next_state <= mth_s2;
 
@@ -187,7 +187,7 @@ begin
                             s_addr_2 <= inst(15 downto 11);  -- rB
                             mux_c <= "000";
                             alu_c <= "01011";
-                            write_en <= "000";
+                            write_en <= "0000";
 
                             next_state <= mth_s2;
 
@@ -203,7 +203,7 @@ begin
                             s_addr_2 <= inst(15 downto 11);  -- rB
                             mux_c <= "000";
                             alu_c <= "01010";
-                            write_en <= "000";
+                            write_en <= "0000";
 
                             next_state <= mth_s2;
 
@@ -221,7 +221,7 @@ begin
                             s_addr_2 <= inst(15 downto 11);  -- rB
                             mux_c <= "000";
                             alu_c <= "00010";
-                            write_en <= "000";
+                            write_en <= "0000";
 
                             next_state <= mth_s2;
 
@@ -233,7 +233,7 @@ begin
                             mux_c <= (others => '0');
                             alu_c <= "00000";
                             
-                            write_en <= "000";
+                            write_en <= "0000";
                             pc_en <= '0';
                             jump_en <= '0';                
                             counter <= x"0000";
@@ -254,7 +254,7 @@ begin
                         data_inst <= inst(15 downto 0);         -- I
                         mux_c <= "010";
                         alu_c <= "00011";
-                        write_en <= "000";
+                        write_en <= "0000";
                                     
                         next_state <= mth_s2;
 
@@ -270,7 +270,7 @@ begin
                         data_inst <= inst(15 downto 0);  -- I
                         mux_c <= "010";
                         alu_c <= "00100";
-                        write_en <= "000";
+                        write_en <= "0000";
                                                 
                         next_state <= mth_s2;
 
@@ -282,7 +282,7 @@ begin
                         mux_c <= (others => '0');
                         alu_c <= "00000";
                         
-                        write_en <= "000";
+                        write_en <= "0000";
                         pc_en <= '0';
                         jump_en <= '0';                
                         counter <= inst(15 downto 0);
@@ -298,7 +298,7 @@ begin
                         counter <= x"0000";
                         counter_en <= '0';
                         alu_c <= "00000";
-                        write_en <= "000";    
+                        write_en <= "0000";    
 
                         data_inst <= inst(15 downto 0);         -- N
                         mux_c <= "001";
@@ -318,7 +318,7 @@ begin
                         data_inst <= inst(15 downto 0);  -- I
                         mux_c <= "010";
                         alu_c <= "00001";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= mth_s2;
 
@@ -334,7 +334,7 @@ begin
                         s_addr_2 <= inst(20 downto 16);  -- rB
                         mux_c <= "000";
                         alu_c <= "00001";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= cust1_s2;
                     
@@ -350,7 +350,7 @@ begin
                         s_addr_1 <= inst(20 downto 16);  -- rA
                         mux_c <= "100";
                         alu_c <= "00001";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= cust2_s2;
 
@@ -366,7 +366,7 @@ begin
                         data_inst <= inst(20 downto 5);  -- I
                         mux_c <= "010";
                         alu_c <= "00001";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= cust3_s2;
 
@@ -382,7 +382,7 @@ begin
                         s_addr_2 <= inst(20 downto 16);  -- rB
                         mux_c <= "000";
                         alu_c <= "00001";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= cust4_s2;
 
@@ -398,9 +398,27 @@ begin
                         data_inst <= inst(20 downto 5);  -- I
                         mux_c <= "010";
                         alu_c <= "00001";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= cust5_s2; 
+                        
+                    elsif inst(31 downto 26) = "111110" then    -- CUST6 rA, I
+                        
+                        s_addr_2 <= inst(25 downto 21);  -- rA
+                        jump_en <= '0';
+                        pc_en <= '1';
+                        counter <= x"0000";
+                        counter_en <= '0';
+
+                        s_addr_1 <= (others => '0');  -- rA
+                        data_inst <= (others => '0');  -- I
+                        mux_c <= "000";
+                        alu_c <= "00001";
+
+                        
+                        write_en <= "1000";
+
+                        next_state <= init; 
 
                     elsif inst(31 downto 21) = "11100100000" then    -- SFEQ rA, rB (sets cmp_flag)
                         
@@ -414,7 +432,7 @@ begin
                         s_addr_2 <= inst(15 downto 11);  -- rB
                         mux_c <= "000";
                         alu_c <= "00110";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= sf_s2;
                     
@@ -430,7 +448,7 @@ begin
                         data_inst <= inst(15 downto 0);  -- I
                         mux_c <= "010";
                         alu_c <= "00110";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= sf_s2;  
                     
@@ -446,7 +464,7 @@ begin
                         s_addr_2 <= inst(15 downto 11);  -- rB
                         mux_c <= "000";
                         alu_c <= "00111";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= sf_s2; 
 
@@ -462,7 +480,7 @@ begin
                         data_inst <= inst(15 downto 0);  -- I
                         mux_c <= "010";
                         alu_c <= "00111";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= sf_s2; 
 
@@ -478,7 +496,7 @@ begin
                         s_addr_2 <= inst(15 downto 11);  -- rB
                         mux_c <= "000";
                         alu_c <= "01000";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= sf_s2;
 
@@ -494,7 +512,7 @@ begin
                         data_inst <= inst(15 downto 0);  -- I
                         mux_c <= "010";
                         alu_c <= "01000";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                         next_state <= sf_s2;  
 
@@ -506,7 +524,7 @@ begin
                         mux_c <= (others => '0');
                         alu_c <= "00000";
                         
-                        write_en <= "000";
+                        write_en <= "0000";
                         pc_en <= '0';
                         jump_en <= '0';                
                         counter <= x"0000";
@@ -525,7 +543,7 @@ begin
                 
                         s_addr_1 <= inst(25 downto 21);  -- rD
                         s_addr_2 <= inst(25 downto 21);  -- rD
-                        write_en <= "001";
+                        write_en <= "0001";
 
                         pc_en <= '1';
                         next_state <= init;
@@ -550,7 +568,7 @@ begin
                         end if;
 
                         alu_c <= "00000";
-                        write_en <= "000";
+                        write_en <= "0000";
 
                 -- CUST1 rA, rB -----------------------------
                 
@@ -564,7 +582,7 @@ begin
                         counter_en <= '0';
                         jump_en <= '0';
 
-                        write_en <= "010";
+                        write_en <= "0010";
 
                         pc_en <= '1';
                         next_state <= init;
@@ -582,7 +600,7 @@ begin
                 
                         s_addr_1 <= inst(25 downto 21);  -- rD
                         s_addr_2 <= inst(25 downto 21);  -- rD
-                        write_en <= "001";
+                        write_en <= "0001";
 
                         pc_en <= '1';
                         next_state <= init;
@@ -599,7 +617,7 @@ begin
                         counter_en <= '0';
                         jump_en <= '0';
 
-                        write_en <= "010";
+                        write_en <= "0010";
 
                         pc_en <= '1';
                         next_state <= init;
@@ -617,7 +635,7 @@ begin
                         alu_c <= "00001";
 
 
-                        write_en <= "100";
+                        write_en <= "0100";
 
                         pc_en <= '1';
                         next_state <= init;
@@ -635,7 +653,7 @@ begin
                         alu_c <= "00001";
 
 
-                        write_en <= "100";
+                        write_en <= "0100";
 
                         pc_en <= '1';
                         next_state <= init;
@@ -650,7 +668,7 @@ begin
                         mux_c <= "000";
                         alu_c <= "00000";
                         jump_en <= '0';
-                        write_en <= "000";
+                        write_en <= "0000";
                         counter <= x"0000";
                         counter_en <= '0';
 
@@ -677,7 +695,7 @@ begin
 
                         pc_en <= '0';
                         alu_c <= "00000";
-                        write_en <= "001";
+                        write_en <= "0001";
 
                 when others =>
 
@@ -691,7 +709,7 @@ begin
                     s_addr_2 <= (others => '0');  -- rB
                     mux_c <= "000";
                     alu_c <= "00000";
-                    write_en <= "000";
+                    write_en <= "0000";
 
                     next_state <= init;
 
