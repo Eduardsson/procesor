@@ -79,11 +79,12 @@ begin
     
       -- Put initialisation code here
 
-      wait for 10000*clock_period;
-    
+      wait for 100*clock_period;
+        pins(15 downto 0) <= x"4510";
+        wait for 100*clock_period;
       -- Put test bench stimulus code here
     
-      stop_the_clock <= true;
+      stop_the_clock <= false;
       wait;
     end process;
     

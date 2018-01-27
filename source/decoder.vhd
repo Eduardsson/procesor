@@ -136,7 +136,7 @@ begin
 
 
                             s_addr_1 <= inst(20 downto 16);  -- rA
-                            s_addr_2 <= inst(25 downto 21);  -- rB
+                            s_addr_2 <= inst(15 downto 11);  -- rB
                             mux_c <= "000";
                             alu_c <= "00011";
                             write_en <= "0000";
@@ -166,7 +166,7 @@ begin
                             counter_en <= '0';
 
                             s_addr_1 <= inst(20 downto 16);  -- rA
-                            s_addr_2 <= inst(25 downto 21);  -- rB
+                            s_addr_2 <= inst(15 downto 11);  -- rB
                             mux_c <= "000";
                             alu_c <= "00100";
                             write_en <= "0000";
