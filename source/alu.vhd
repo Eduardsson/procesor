@@ -100,6 +100,10 @@ begin
         
         elsif (alu_c(3 downto 0) = x"B") then
             result_alu <= std_logic_vector(unsigned(reg_1) srl to_integer(unsigned(reg_2(4 downto 0))));
+
+        elsif (alu_c(3 downto 0) = x"F") then
+            result_alu <= reg_2;
+
         else
             result_alu <= x"0000_0000";
         end if;    

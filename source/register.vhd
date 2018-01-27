@@ -40,7 +40,6 @@ entity reg_field is
            mux_c : in STD_LOGIC_VECTOR (2 downto 0);
            write_r : in STD_LOGIC;
            clk : in STD_LOGIC;
-           rst : in std_logic;
            reg_1 : out STD_LOGIC_VECTOR (31 downto 0);
            reg_2 : out STD_LOGIC_VECTOR (31 downto 0);
            reg_g : out STD_LOGIC_VECTOR (31 downto 0));
