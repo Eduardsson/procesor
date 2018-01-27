@@ -51,7 +51,7 @@ architecture behavioral of rom is
         return rom;
     end function;
     
-    constant rom : rom_type := InitRomFromFile("programs/rom.1.data");
+    constant rom : rom_type := InitRomFromFile("programs/rom.delay.data");
     
 begin
 

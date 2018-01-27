@@ -66,7 +66,6 @@ component decoder is
            alu_c : out STD_LOGIC_VECTOR (4 downto 0);
            write_en : out STD_LOGIC_VECTOR (2 downto 0);
            jump_en : out STD_LOGIC;
-           cmp_flag_reg: out STD_LOGIC;
            pc_en : out STD_LOGIC);
 end component;
 
@@ -98,7 +97,6 @@ component reg_field is
            mux_c : in STD_LOGIC_VECTOR (2 downto 0);
            write_r : in STD_LOGIC;
            clk : in STD_LOGIC;
-           rst : in STD_LOGIC;
            reg_1 : out STD_LOGIC_VECTOR (31 downto 0);
            reg_2 : out STD_LOGIC_VECTOR (31 downto 0);
            reg_g : out STD_LOGIC_VECTOR (31 downto 0));
@@ -162,7 +160,6 @@ reg_field_module: reg_field port map (
     mux_c => mux_c,
     write_r => write_en(0),
     clk => clk,
-    rst => rst,
     reg_1 => reg_1,
     reg_2 => reg_2,
     reg_g => reg_g

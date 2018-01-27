@@ -73,8 +73,7 @@ begin
       wait for 10000*clock_period;
     
       -- Put test bench stimulus code here
-    
-      stop_the_clock <= true;
+
       wait;
     end process;
     
