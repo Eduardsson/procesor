@@ -31,8 +31,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity digit is
-	Port( nibble : in STD_LOGIC_VECTOR(3 downto 0);
-			segm : out STD_LOGIC_VECTOR(6 downto 0));
+	PORT (
+		nibble : in STD_LOGIC_VECTOR(3 downto 0);
+		segm : out STD_LOGIC_VECTOR(6 downto 0)
+	);
 end digit;
 
 architecture Behavioral of digit is

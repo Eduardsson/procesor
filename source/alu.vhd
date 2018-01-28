@@ -34,10 +34,15 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity alu is
-    Port ( reg_1 : in STD_LOGIC_VECTOR (31 downto 0);
-           reg_2 : in STD_LOGIC_VECTOR (31 downto 0);
-           alu_c : in STD_LOGIC_VECTOR (4 downto 0);
-           result_alu : out STD_LOGIC_VECTOR (31 downto 0));
+    GENERIC (
+        data_B : INTEGER
+    );
+    PORT (
+        reg_1 : in STD_LOGIC_VECTOR (data_B downto 0);
+        reg_2 : in STD_LOGIC_VECTOR (data_B downto 0);
+        alu_c : in STD_LOGIC_VECTOR (4 downto 0);
+        result_alu : out STD_LOGIC_VECTOR (data_B downto 0)
+    );
 end alu;
 
 architecture Behavioral of alu is  
@@ -67,31 +72,34 @@ begin
             elsif alu_c(4) = '0' then
                 result_alu <= reg_2;
             else
-                result_alu <= x"0000_0000";
+                result_alu <= (others => '0');
             end if;
         
         -- compare equal - good
         elsif (alu_c(3 downto 0) = x"6") then
             if (reg_1 = reg_2) then
-                result_alu <= x"0000_0001";
+                result_alu(data_B downto 1) <= (others => '0');
+                result_alu(0) <= '1';
             else
-                result_alu <= x"0000_0000";
+                result_alu <= (others => '0');
             end if;
         
         -- compare not equal - good    
         elsif (alu_c(3 downto 0) = x"7") then
             if (reg_1 /= reg_2) then
-                result_alu <= x"0000_0001";
+                result_alu(data_B downto 1) <= (others => '0');
+                result_alu(0) <= '1';
             else
-                result_alu <= x"0000_0000";
+                result_alu <= (others => '0');
             end if;
         
         -- compare bigger - good    
         elsif (alu_c(3 downto 0) = x"8") then
             if (reg_1 >= reg_2) then
-                result_alu <= x"0000_0001";
+                result_alu(data_B downto 1) <= (others => '0');
+                result_alu(0) <= '1';
             else
-                result_alu <= x"0000_0000";
+                result_alu <= (others => '0');
             end if;
         
         
@@ -105,7 +113,7 @@ begin
             result_alu <= reg_2;
 
         else
-            result_alu <= x"0000_0000";
+            result_alu <= (others => '0');
         end if;    
 
         

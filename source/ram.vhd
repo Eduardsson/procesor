@@ -23,15 +23,21 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity ram is
-    port (clk : in STD_LOGIC;
-          write_en  : in STD_LOGIC;
-          addr   : in STD_LOGIC_VECTOR(4 downto 0);
-          data_in  : in STD_LOGIC_VECTOR(31 downto 0);
-          data_out  : out STD_LOGIC_VECTOR(31 downto 0));
+    GENERIC (
+        data_B : INTEGER;
+        addr_B : INTEGER
+    );
+    PORT (
+        clk : in STD_LOGIC;
+        write_en  : in STD_LOGIC;
+        addr   : in STD_LOGIC_VECTOR(addr_B downto 0);
+        data_in  : in STD_LOGIC_VECTOR(data_B downto 0);
+        data_out  : out STD_LOGIC_VECTOR(data_B downto 0)
+    );
 end ram;
 
 architecture syn of ram is
-    type ram_type is array (31 downto 0) of STD_LOGIC_VECTOR (31 downto 0);
+    type ram_type is array (31 downto 0) of STD_LOGIC_VECTOR (data_B downto 0);
     signal RAM : ram_type := (others => (others => '0'));
 begin
 

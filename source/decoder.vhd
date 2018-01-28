@@ -38,19 +38,24 @@ use IEEE.NUMERIC_STD.ALL;
 -- 15 downto 0 I
 
 entity decoder is
-    Port ( inst : in STD_LOGIC_VECTOR (31 downto 0);
-           cmp_flag : in STD_LOGIC;
-           clk : in STD_LOGIC;
-           rst : in STD_LOGIC;
-           addr_1 : out STD_LOGIC_VECTOR (4 downto 0);
-           addr_2 : out STD_LOGIC_VECTOR (4 downto 0);
-           data_inst : out STD_LOGIC_VECTOR (15 downto 0);
-           mux_c : out STD_LOGIC_VECTOR (2 downto 0);
-           alu_c : out STD_LOGIC_VECTOR (4 downto 0);
-           write_en : out STD_LOGIC_VECTOR (3 downto 0);
-           jump_en : out STD_LOGIC;
-           pc_en : out STD_LOGIC);
-           
+    GENERIC (
+        inst_B : INTEGER;
+        addr_B : INTEGER
+    );
+    PORT (
+        inst : in STD_LOGIC_VECTOR (inst_B downto 0);
+        cmp_flag : in STD_LOGIC;
+        clk : in STD_LOGIC;
+        rst : in STD_LOGIC;
+        addr_1 : out STD_LOGIC_VECTOR (addr_B downto 0);
+        addr_2 : out STD_LOGIC_VECTOR (addr_B downto 0);
+        data_inst : out STD_LOGIC_VECTOR (15 downto 0);
+        mux_c : out STD_LOGIC_VECTOR (2 downto 0);
+        alu_c : out STD_LOGIC_VECTOR (4 downto 0);
+        write_en : out STD_LOGIC_VECTOR (3 downto 0);
+        jump_en : out STD_LOGIC;
+        pc_en : out STD_LOGIC
+    );
 end decoder;
 
 architecture Behavioral of decoder is
@@ -58,7 +63,7 @@ architecture Behavioral of decoder is
     type state_type is (init, mth_s2, cmov_s1, nop_s2, cust1_s2, cust3_s2, cust5_s2, cust2_s2, cust4_s2, sf_s2, cmov_s2, reset);
     signal state, next_state : state_type;
 
-    signal s_addr_1, s_addr_2 : STD_LOGIC_VECTOR (4 downto 0);
+    signal s_addr_1, s_addr_2 : STD_LOGIC_VECTOR (addr_B downto 0);
     
     signal counter, s_counter : STD_LOGIC_VECTOR (15 downto 0) := x"0000";
     signal counter_en : STD_LOGIC;
@@ -112,6 +117,7 @@ begin
                             counter_en <= '0';
                             pc_en <= '0';
                             data_inst <= (others => '0');
+                            cmp_flag_reg <= cmp_flag_reg;
                             
                             s_addr_1 <= inst(20 downto 16);     -- rA
                             s_addr_2 <= inst(15 downto 11);     -- rB
@@ -128,7 +134,7 @@ begin
                             jump_en <= '0';
                             counter <= x"0000";
                             counter_en <= '0';
-
+                            cmp_flag_reg <= cmp_flag_reg;
 
                             s_addr_1 <= inst(20 downto 16);  -- rA
                             s_addr_2 <= inst(15 downto 11);  -- rB
@@ -147,6 +153,7 @@ begin
                             jump_en <= '0';                
                             counter <= x"0000";
                             counter_en <= '0';
+                            cmp_flag_reg <= cmp_flag_reg;
 
                             s_addr_1 <= inst(20 downto 16);  -- rA
                             s_addr_2 <= inst(15 downto 11);  -- rB
@@ -162,6 +169,7 @@ begin
                             jump_en <= '0';
                             counter <= x"0000";
                             counter_en <= '0';
+                            cmp_flag_reg <= cmp_flag_reg;
 
                             s_addr_1 <= inst(20 downto 16);  -- rA
                             s_addr_2 <= inst(15 downto 11);  -- rB
@@ -173,39 +181,41 @@ begin
 
                         elsif inst(3 downto 0) = x"8" then
                             
-                        if inst(9 downto 6) = x"1" then         -- SRL rD, rA, rB
-                            
-                            jump_en <= '0';
-                            pc_en <= '0';
-                            counter <= x"0000";
-                            counter_en <= '0';
-                            data_inst <= (others => '0');
+                            if inst(9 downto 6) = x"1" then         -- SRL rD, rA, rB
+                                
+                                jump_en <= '0';
+                                pc_en <= '0';
+                                counter <= x"0000";
+                                counter_en <= '0';
+                                data_inst <= (others => '0');
+                                cmp_flag_reg <= cmp_flag_reg;
 
-                            s_addr_1 <= inst(20 downto 16);  -- rA
-                            s_addr_2 <= inst(15 downto 11);  -- rB
-                            mux_c <= "000";
-                            alu_c <= "01011";
-                            write_en <= "0000";
+                                s_addr_1 <= inst(20 downto 16);  -- rA
+                                s_addr_2 <= inst(15 downto 11);  -- rB
+                                mux_c <= "000";
+                                alu_c <= "01011";
+                                write_en <= "0000";
 
-                            next_state <= mth_s2;
+                                next_state <= mth_s2;
 
-                        else                                    -- SLL rD, rA, rB
-                            
-                            jump_en <= '0';
-                            pc_en <= '0';
-                            counter <= x"0000";
-                            counter_en <= '0';
-                            data_inst <= (others => '0');
+                            else                                    -- SLL rD, rA, rB
+                                
+                                jump_en <= '0';
+                                pc_en <= '0';
+                                counter <= x"0000";
+                                counter_en <= '0';
+                                data_inst <= (others => '0');
+                                cmp_flag_reg <= cmp_flag_reg;
 
-                            s_addr_1 <= inst(20 downto 16);  -- rA
-                            s_addr_2 <= inst(15 downto 11);  -- rB
-                            mux_c <= "000";
-                            alu_c <= "01010";
-                            write_en <= "0000";
+                                s_addr_1 <= inst(20 downto 16);  -- rA
+                                s_addr_2 <= inst(15 downto 11);  -- rB
+                                mux_c <= "000";
+                                alu_c <= "01010";
+                                write_en <= "0000";
 
-                            next_state <= mth_s2;
+                                next_state <= mth_s2;
 
-                        end if;
+                            end if;
 
                         elsif inst(3 downto 0) = x"2" then      -- SUB rD, rA, rB
                             
@@ -214,6 +224,7 @@ begin
                             counter <= x"0000";
                             counter_en <= '0';
                             data_inst <= (others => '0');
+                            cmp_flag_reg <= cmp_flag_reg;
 
                             s_addr_1 <= inst(20 downto 16);  -- rA
                             s_addr_2 <= inst(15 downto 11);  -- rB
@@ -230,6 +241,7 @@ begin
                             data_inst <= (others => '0');
                             mux_c <= (others => '0');
                             alu_c <= "00000";
+                            cmp_flag_reg <= cmp_flag_reg;
                             
                             write_en <= "0000";
                             pc_en <= '0';
@@ -246,7 +258,7 @@ begin
                         s_addr_2 <= (others => '0'); 
                         counter <= x"0000";
                         counter_en <= '0';
-
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= inst(20 downto 16);         -- rA
                         data_inst <= inst(15 downto 0);         -- I
@@ -263,6 +275,7 @@ begin
                         s_addr_2 <= (others => '0'); 
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= inst(20 downto 16);  -- rA
                         data_inst <= inst(15 downto 0);  -- I
@@ -279,6 +292,7 @@ begin
                         data_inst <= (others => '0');
                         mux_c <= (others => '0');
                         alu_c <= "00000";
+                        cmp_flag_reg <= cmp_flag_reg;
                         
                         write_en <= "0000";
                         pc_en <= '0';
@@ -296,7 +310,8 @@ begin
                         counter <= x"0000";
                         counter_en <= '0';
                         alu_c <= "00000";
-                        write_en <= "0000";    
+                        write_en <= "0000";
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         data_inst <= inst(15 downto 0);         -- N
                         mux_c <= "001";
@@ -311,7 +326,8 @@ begin
                         pc_en <= '0';
                         counter <= x"0000";
                         counter_en <= '0';
-                        write_en <= "0000";    
+                        write_en <= "0000";
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_2 <= inst(15 downto 11);         -- rB
                         alu_c <= "01111";
@@ -327,6 +343,7 @@ begin
                         jump_en <= '0';
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= inst(20 downto 16);  -- rA
                         data_inst <= inst(15 downto 0);  -- I
@@ -343,6 +360,7 @@ begin
                         pc_en <= '0';
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= inst(25 downto 21);  -- rA
                         s_addr_2 <= inst(20 downto 16);  -- rB
@@ -360,6 +378,7 @@ begin
                         pc_en <= '0';
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
                             
                         s_addr_1 <= inst(20 downto 16);  -- rA
                         mux_c <= "100";
@@ -375,6 +394,7 @@ begin
                         pc_en <= '0';
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= inst(25 downto 21);  -- rA
                         data_inst <= inst(20 downto 5);  -- I
@@ -391,6 +411,7 @@ begin
                         pc_en <= '0';
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= inst(25 downto 21);  -- rA
                         s_addr_2 <= inst(20 downto 16);  -- rB
@@ -407,6 +428,7 @@ begin
                         pc_en <= '0';
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= inst(25 downto 21);  -- rA
                         data_inst <= inst(20 downto 5);  -- I
@@ -416,13 +438,14 @@ begin
 
                         next_state <= cust5_s2; 
                         
-                    elsif inst(31 downto 26) = "111110" then    -- CUST6 rA, I
+                    elsif inst(31 downto 26) = "111110" then    -- CUST6 rB, I
                         
-                        s_addr_2 <= inst(25 downto 21);  -- rA
+                        s_addr_2 <= inst(25 downto 21);  -- rB
                         jump_en <= '0';
                         pc_en <= '1';
                         counter <= x"0000";
                         counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         s_addr_1 <= (others => '0');  -- rA
                         data_inst <= (others => '0');  -- I
@@ -549,6 +572,7 @@ begin
                         data_inst <= (others => '0');
                         mux_c <= (others => '0');
                         alu_c <= "00000";
+                        cmp_flag_reg <= cmp_flag_reg;
                         
                         write_en <= "0000";
                         pc_en <= '0';
@@ -566,6 +590,7 @@ begin
                         mux_c <= "000";
                         alu_c <= "00000";
                         data_inst <= (others => '0');
+                        cmp_flag_reg <= cmp_flag_reg;
                 
                         s_addr_1 <= inst(25 downto 21);  -- rD
                         s_addr_2 <= inst(25 downto 21);  -- rD
@@ -583,7 +608,8 @@ begin
                         mux_c <= "000";
                         jump_en <= '0';
                         counter <= x"0000";
-                        counter_en <= '0';     
+                        counter_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;  
 
                         if (s_counter = x"0000") then
                             pc_en <= '1';
@@ -607,6 +633,7 @@ begin
                         counter <= x"0000";
                         counter_en <= '0';
                         jump_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         write_en <= "0010";
 
@@ -623,7 +650,8 @@ begin
                         mux_c <= "100";
                         alu_c <= "00001";
                         data_inst <= (others => '0');
-                
+                        cmp_flag_reg <= cmp_flag_reg;
+
                         s_addr_1 <= inst(25 downto 21);  -- rD
                         s_addr_2 <= inst(25 downto 21);  -- rD
                         write_en <= "0001";
@@ -642,6 +670,7 @@ begin
                         counter <= x"0000";
                         counter_en <= '0';
                         jump_en <= '0';
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         write_en <= "0010";
 
@@ -659,7 +688,7 @@ begin
                         counter_en <= '0';
                         mux_c <= "000";
                         alu_c <= "00001";
-
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         write_en <= "0100";
 
@@ -677,7 +706,7 @@ begin
                         counter_en <= '0';
                         mux_c <= "010";
                         alu_c <= "00001";
-
+                        cmp_flag_reg <= cmp_flag_reg;
 
                         write_en <= "0100";
 
@@ -706,13 +735,14 @@ begin
                 -- RESET
                                         
                 when reset =>
-                        s_addr_2 <= s_counter(4 downto 0);
-                        s_addr_1 <= s_counter(4 downto 0);
+                        s_addr_2 <= s_counter(addr_B downto 0);
+                        s_addr_1 <= s_counter(addr_B downto 0);
                         data_inst <= (others => '0');
                         mux_c <= "000";
                         jump_en <= '0';
                         counter <= x"0000";
-                        counter_en <= '0';     
+                        counter_en <= '0';   
+                        cmp_flag_reg <= '0';  
 
                         if (s_counter = x"0000") then
                             next_state <= init;
@@ -738,6 +768,8 @@ begin
                     alu_c <= "00000";
                     write_en <= "0000";
 
+                    cmp_flag_reg <= cmp_flag_reg;
+
                     next_state <= init;
 
             end case;
@@ -748,7 +780,6 @@ begin
     
     CNTR: process (clk, counter, s_counter)
     begin
-        
         if (clk'event and clk='1') then
             if (counter_en = '1') then
                 s_counter <= counter;
@@ -756,9 +787,6 @@ begin
                 s_counter <= std_logic_vector(unsigned(s_counter) - 1);
             end if;
         end if;
-        
-        
-    end process; 
-
+    end process;
 
 end Behavioral;

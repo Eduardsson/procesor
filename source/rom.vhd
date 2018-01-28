@@ -27,16 +27,20 @@ use std.textio.all;
 use ieee.std_logic_textio.all;
 
 entity rom is
-    Port (
-        pc : in STD_LOGIC_VECTOR (15 downto 0);
-        inst : out STD_LOGIC_VECTOR (31 downto 0)
+    GENERIC (
+        counter_B : INTEGER;
+        inst_B : INTEGER
+    );
+    PORT (
+        pc : in STD_LOGIC_VECTOR (counter_B downto 0);
+        inst : out STD_LOGIC_VECTOR (inst_B downto 0)
     );
 end rom;
 
 architecture behavioral of rom is
 
     -- Rom data type
-    type rom_type is array (1024 downto 0) of std_logic_vector (31 downto 0);
+    type rom_type is array (1024 downto 0) of std_logic_vector (inst_B downto 0);
     
     -- load memory from file
     impure function InitRomFromFile (RomFileName : in string) return rom_type is
@@ -51,7 +55,7 @@ architecture behavioral of rom is
         return rom;
     end function;
     
-    constant rom : rom_type := InitRomFromFile("programs/rom.3.data");
+    constant rom : rom_type := InitRomFromFile("programs/rom.4.data");
     
 begin
 

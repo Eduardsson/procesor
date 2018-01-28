@@ -34,17 +34,22 @@ use ieee.std_logic_unsigned.all;
 --use UNISIM.VComponents.all;
 
 entity program_counter is
-    Port ( clk : in STD_LOGIC;
-           rst : in STD_LOGIC;
-           jump_en : in STD_LOGIC;
-           pc_en : in STD_LOGIC;
-           jump_addr : in STD_LOGIC_VECTOR (15 downto 0);
-           pc : out STD_LOGIC_VECTOR (15 downto 0) );
+  GENERIC (
+    counter_B : INTEGER
+  );
+  PORT ( 
+    clk : in STD_LOGIC;
+    rst : in STD_LOGIC;
+    jump_en : in STD_LOGIC;
+    pc_en : in STD_LOGIC;
+    jump_addr : in STD_LOGIC_VECTOR (counter_B downto 0);
+    pc : out STD_LOGIC_VECTOR (counter_B downto 0)
+  );
 end program_counter;
 
 architecture Behavioral of program_counter is
 
-signal pc_int: STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+signal pc_int: STD_LOGIC_VECTOR(counter_B downto 0) := (others => '0');
 
 begin
 
@@ -62,6 +67,5 @@ begin
   end process;
 
   pc <= pc_int;
-
 
 end Behavioral;

@@ -24,16 +24,16 @@ use IEEE.NUMERIC_STD.ALL;
 
 
 entity divider_1kHz is
-    Port ( clk : in STD_LOGIC;
-           clk_1kHz : out STD_LOGIC);
-
+    PORT (
+        clk : in STD_LOGIC;
+        clk_1kHz : out STD_LOGIC
+    );
 end divider_1kHz;
 
 architecture Behavioral of divider_1kHz is
 
-    signal cnt_int : STD_LOGIC_VECTOR (16 downto 0) := "00000000000000000";
+    signal cnt_int : STD_LOGIC_VECTOR (16 downto 0) := (others => '0');
     
-
 begin
 
     DIV_COUNTER : process(clk)

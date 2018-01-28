@@ -39,38 +39,46 @@ architecture Behavioral of display_driver is
     signal en_disp: STD_LOGIC := '0';
 
     component multiplexing is
-        Port (clk_1kHz, rst: in STD_LOGIC;
-                an: out STD_LOGIC_VECTOR (3 downto 0));
+        PORT (
+            clk_1kHz, rst: in STD_LOGIC;
+            an: out STD_LOGIC_VECTOR (3 downto 0)
+        );
     end component;
 
     component divider_1kHz is
-        Port ( clk : in STD_LOGIC;
-               clk_1kHz : out STD_LOGIC);
-    
+        PORT (
+            clk : in STD_LOGIC;
+            clk_1kHz : out STD_LOGIC
+            );
     end component;
 
     component digit is
-        Port( nibble : in STD_LOGIC_VECTOR(3 downto 0);
-                segm : out STD_LOGIC_VECTOR(6 downto 0));
+        PORT (
+            nibble : in STD_LOGIC_VECTOR(3 downto 0);
+            segm : out STD_LOGIC_VECTOR(6 downto 0)
+        );
     end component;
 
 begin
 
-    multiplexing_module: multiplexing port map (
+    multiplexing_module: multiplexing
+        port map (
             rst => rst,
             clk_1kHz => clk_1kHz,
             an => curr_an
         );
 
-    divider_1kHz_module: divider_1kHz port map (
-        clk => clk,
-        clk_1kHz => clk_1kHz
-    );
+    divider_1kHz_module: divider_1kHz
+        port map (
+            clk => clk,
+            clk_1kHz => clk_1kHz
+        );
 
-    digit_module: digit port map (
-        nibble => curr_dig,
-        segm => segm_curr
-    );
+    digit_module: digit
+        port map (
+            nibble => curr_dig,
+            segm => segm_curr
+        );
 
     with curr_an select
         curr_dig <= en_number(15 downto 12) when "0111",
@@ -80,9 +88,12 @@ begin
                     x"0"                    when others;
     an <= curr_an;
 
-    EN_PROC: process(clk, write_dr)
+    EN_PROC: process(clk, rst, write_dr)
     begin
-        if(clk = '1' and clk'event and write_dr = '1') then
+        if (rst = '1') then
+            en_disp <= '0';
+            en_number <= (others => '0');
+        elsif (clk = '1' and clk'event and write_dr = '1') then
             en_disp <= '1';
             en_number <= disp_number;
         else
